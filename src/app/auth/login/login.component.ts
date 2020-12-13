@@ -4,6 +4,8 @@ import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/models/user.model';
 import {Message} from '../../shared/models/message.model';
 import {Subject} from 'rxjs';
+import {AuthService} from '../../shared/services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'wfm-login',
@@ -15,7 +17,10 @@ export class LoginComponent implements OnInit {
   message: Message;
   public error$: Subject<string> = new Subject<string>();
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private authService: AuthService,
+              private router: Router
+  ) {
   }
 
   ngOnInit(): void {
@@ -38,7 +43,10 @@ export class LoginComponent implements OnInit {
     this.userService.getUserByEmail(form.email).subscribe((user: User[]) => {
       if (user.length !== 0) {
         if (user[0].password === form.password) {
-          console.log(user);
+          this.authService.login();
+          localStorage.setItem('user', JSON.stringify(user));
+          /*this.router.navigate(['/']).then(() => {
+          });*/
         } else {
           this.error$.next(this.message.text = 'Повторите пароль');
         }
