@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.message = new Message('danger', '');
+    this.message = new Message('', 'danger');
     this.route.queryParams.subscribe((params) => {
       if (params.registration) {
         this.showMessage({type: 'success', text: 'Введите ваши данные'});
@@ -46,9 +46,10 @@ export class LoginComponent implements OnInit {
 
   submit(): void {
     const form = this.form.value;
-    this.userService.getUserByEmail(form.email).subscribe((user: User[]) => {
-      if (user.length !== 0) {
-        if (user[0].password === form.password) {
+    this.userService.getUserByEmail(form.email)
+      .subscribe((user: User) => {
+      if (user) {
+        if (user.password === form.password) {
           this.authService.login();
           localStorage.setItem('user', JSON.stringify(user));
           /*this.router.navigate(['/']).then(() => {
@@ -65,7 +66,6 @@ export class LoginComponent implements OnInit {
       window.setTimeout(() => {
         this.error$.next(this.message.text = '');
       }, 5000);
-      console.log(user);
     });
   }
 }
