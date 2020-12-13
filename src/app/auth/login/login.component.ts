@@ -48,24 +48,24 @@ export class LoginComponent implements OnInit {
     const form = this.form.value;
     this.userService.getUserByEmail(form.email)
       .subscribe((user: User) => {
-      if (user) {
-        if (user.password === form.password) {
-          this.authService.login();
-          localStorage.setItem('user', JSON.stringify(user));
-          /*this.router.navigate(['/']).then(() => {
-          });*/
+        if (user) {
+          if (user.password === form.password) {
+            this.authService.login();
+            localStorage.setItem('user', JSON.stringify(user));
+            /*this.router.navigate(['/']).then(() => {
+            });*/
+          } else {
+            this.error$.next(this.message.text = 'Повторите пароль');
+          }
         } else {
-          this.error$.next(this.message.text = 'Повторите пароль');
+          this.showMessage({
+            type: 'danger',
+            text: 'Пользовататель не существует'
+          });
         }
-      } else {
-        this.showMessage({
-          type: 'danger',
-          text: 'Пользовататель не существует'
-        });
-      }
-      window.setTimeout(() => {
-        this.error$.next(this.message.text = '');
-      }, 5000);
-    });
+        window.setTimeout(() => {
+          this.error$.next(this.message.text = '');
+        }, 5000);
+      });
   }
 }
