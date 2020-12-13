@@ -5,7 +5,7 @@ import {User} from '../../shared/models/user.model';
 import {Message} from '../../shared/models/message.model';
 import {Subject} from 'rxjs';
 import {AuthService} from '../../shared/services/auth.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'wfm-login',
@@ -19,20 +19,26 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService: UserService,
               private authService: AuthService,
-              private router: Router
+              private router: Router,
+              private route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
     this.message = new Message('danger', '');
+    this.route.queryParams.subscribe((params) => {
+      if (params.registration) {
+        this.showMessage({type: 'success', text: 'Введите ваши данные'});
+      }
+    });
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])
     });
   }
 
-  private showMessage(text: string, type: string = 'danger'): void {
-    this.message = new Message(type, text);
+  private showMessage(message: Message): void {
+    this.message = message;
     window.setTimeout(() => {
       this.message.text = '';
     }, 5000);
@@ -51,7 +57,10 @@ export class LoginComponent implements OnInit {
           this.error$.next(this.message.text = 'Повторите пароль');
         }
       } else {
-        this.showMessage('Пользовататель не существует', 'danger');
+        this.showMessage({
+          type: 'danger',
+          text: 'Пользовататель не существует'
+        });
       }
       window.setTimeout(() => {
         this.error$.next(this.message.text = '');

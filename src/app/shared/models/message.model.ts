@@ -1,4 +1,4 @@
 export class Message {
-  constructor(public type: string, public text: string) {
+  constructor(public text: string, public type: string) {
   }
 }
