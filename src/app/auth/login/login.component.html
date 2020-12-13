@@ -1,4 +1,10 @@
 <p class="text-xs-center">Войдите для работы</p>
+<div
+  class="alert alert-{{message.type}}"
+  *ngIf="message.text"
+>
+  {{message.text}}</div>
+<!--<div class="alert alert-danger" *ngIf="error$ | async as error">{{error}}</div>-->
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="form-group"
        [ngClass]="{'has-error':form.get('email').invalid && form.get('email').touched}">
