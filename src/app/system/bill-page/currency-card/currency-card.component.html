@@ -14,18 +14,23 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>доллар</td>
-            <td>{{dollar| number:'2.2-2'}}</td>
-            <td>{{date| date:'dd.MM.yyy'}}</td>
+          <tr
+            *ngFor="let val of coin"
+          >
+            <td>{{val.base | wtfSymbol}}</td>
+            <td>{{val.rates.RUB| number:'2.2-2'}}</td>
+            <td>{{val.date| wfmMoment:'YYYY-MM-DD'}}</td>
+            <!--   <td>доллар</td>
+               <td>{{dollar| number:'2.2-2'}}</td>
+               <td>{{date| date:'dd.MM.yyy'}}</td>
+             </tr>
+             <tr>
+               <td>евро</td>
+               <td>{{euro| number:'2.2-2'}}</td>
+               <td>{{date| date:'dd.MM.yyy'}}</td>-->
           </tr>
           <tr>
-            <td>евро</td>
-            <td>{{euro| number:'2.2-2'}}</td>
-            <td>{{date| date:'dd.MM.yyy'}}</td>
-          </tr>
-          <tr>
-            <td>рубль</td>
+            <td>{{currency.base | wtfSymbol}}</td>
             <td>{{rub| number:'1.2-4'}}</td>
             <td>{{date| date:'dd.MM.yyy'}}</td>
           </tr>

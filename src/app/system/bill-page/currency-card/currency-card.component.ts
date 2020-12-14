@@ -2,10 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'wfm-currency',
-  templateUrl: './currency.component.html',
-  styleUrls: ['./currency.component.scss']
+  templateUrl: './currency-card.component.html',
+  styleUrls: ['./currency-card.component.scss']
 })
-export class CurrencyComponent implements OnInit {
+export class CurrencyCardComponent implements OnInit {
   @Input() currency: any;
   @Input() coin: any[];
   date = new Date();

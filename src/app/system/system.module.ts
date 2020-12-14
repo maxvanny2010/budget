@@ -11,10 +11,12 @@ import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import {DropdownDirective} from './shared/directives/dropdown.directive';
 import {BillCardComponent} from './bill-page/bill-card/bill-card.component';
-import {CurrencyComponent} from './bill-page/currency/currency.component';
+import {CurrencyCardComponent} from './bill-page/currency-card/currency-card.component';
 import {BillService} from './shared/services/bill.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BillInterceptor} from './shared/bill.interceptor';
+import {MomentPipe} from './shared/pipes/moment.pipe';
+import {SymbolPipe} from './shared/pipes/symbol.pipe';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -35,7 +37,9 @@ const INTERCEPTOR_PROVIDER: Provider = {
     HeaderComponent,
     DropdownDirective,
     BillCardComponent,
-    CurrencyComponent
+    CurrencyCardComponent,
+    MomentPipe,
+    SymbolPipe
   ],
   providers: [BillService, INTERCEPTOR_PROVIDER]
 })
