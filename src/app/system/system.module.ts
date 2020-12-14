@@ -8,6 +8,8 @@ import {HistoryPageComponent} from './history-page/history-page.component';
 import {PlanningPageComponent} from './planning-page/planning-page.component';
 import {RecordPageComponent} from './record-page/record-page.component';
 import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
+import {HeaderComponent} from './shared/components/header/header.component';
+import {DropdownDirective} from './shared/directives/dropdown.directive';
 
 @NgModule({
   imports: [
@@ -19,7 +21,10 @@ import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
     PlanningPageComponent,
     RecordPageComponent,
     SidebarComponent,
-  ]
+    HeaderComponent,
+    DropdownDirective
+  ],
+  providers: []
 })
 export class SystemModule {
 
