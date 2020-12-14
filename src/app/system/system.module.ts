@@ -7,6 +7,7 @@ import {BillPageComponent} from './bill-page/bill-page.component';
 import {HistoryPageComponent} from './history-page/history-page.component';
 import {PlanningPageComponent} from './planning-page/planning-page.component';
 import {RecordPageComponent} from './record-page/record-page.component';
+import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import {RecordPageComponent} from './record-page/record-page.component';
     HistoryPageComponent,
     PlanningPageComponent,
     RecordPageComponent,
+    SidebarComponent,
   ]
 })
 export class SystemModule {

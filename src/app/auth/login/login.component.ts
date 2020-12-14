@@ -52,8 +52,8 @@ export class LoginComponent implements OnInit {
           if (user.password === form.password) {
             this.authService.login();
             localStorage.setItem('user', JSON.stringify(user));
-            /*this.router.navigate(['/']).then(() => {
-            });*/
+            this.router.navigate(['/system', 'bill']).then(() => {
+            });
           } else {
             this.error$.next(this.message.text = 'Повторите пароль');
           }
