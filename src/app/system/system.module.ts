@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, Provider} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SharedModule} from '../shared/shared.module';
 import {SystemRoutingModule} from './system-routing.module';
@@ -10,6 +10,17 @@ import {RecordPageComponent} from './record-page/record-page.component';
 import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import {DropdownDirective} from './shared/directives/dropdown.directive';
+import {BillCardComponent} from './bill-page/bill-card/bill-card.component';
+import {CurrencyComponent} from './bill-page/currency/currency.component';
+import {BillService} from './shared/services/bill.service';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {BillInterceptor} from './shared/bill.interceptor';
+
+const INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: BillInterceptor,
+  multi: true
+};
 
 @NgModule({
   imports: [
@@ -22,9 +33,11 @@ import {DropdownDirective} from './shared/directives/dropdown.directive';
     RecordPageComponent,
     SidebarComponent,
     HeaderComponent,
-    DropdownDirective
+    DropdownDirective,
+    BillCardComponent,
+    CurrencyComponent
   ],
-  providers: []
+  providers: [BillService, INTERCEPTOR_PROVIDER]
 })
 export class SystemModule {
 
