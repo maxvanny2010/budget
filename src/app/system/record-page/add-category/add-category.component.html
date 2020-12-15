@@ -19,7 +19,7 @@
         <label class="control-label" for="category-value">Введите лимит</label>
         <input type="number" id="category-value" class="form-control"
                [ngModel]="1" name="capacity" #capacity="ngModel" wfmPositive
-               required minlength="1">
+               required min="1">
         <span
           *ngIf="capacity.invalid && capacity.touched"
           class="form-help-text">Заполните поле</span>
