@@ -24,7 +24,7 @@ export class BillPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.bSub = combineLatest([
-      this.billService.getBill(),
+      this.billService.obtain(),
       this.billService.getCurrency('RUB', 'USD', 'EUR', 'RUB'),
       this.billService.getCurrency('USD', 'RUB'),
       this.billService.getCurrency('EUR', 'RUB'),

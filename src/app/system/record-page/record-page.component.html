@@ -6,7 +6,9 @@
 <section class="section" *ngIf="isLoaded; else loading">
   <div class="row">
     <div class="col-md-6">
-      <wfm-add-event></wfm-add-event>
+      <wfm-add-event
+        [categories]="categories">
+      </wfm-add-event>
     </div>
     <div class="col-md-6">
       <wfm-add-category (addCategory)="addCategory($event)"></wfm-add-category>
