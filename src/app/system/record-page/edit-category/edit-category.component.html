@@ -1,0 +1,59 @@
+<div class="card">
+  <div class="card-header bordered">
+    <div class="header-block">
+      <h3 class="title">Редактировать категорию</h3>
+    </div>
+  </div>
+  <div class="card-block">
+    <div class="alert alert-{{message.type}}" *ngIf="message.text">{{message.text}}</div>
+    <form #f="ngForm" (ngSubmit)="submit(f)">
+      <div class="form-group">
+        <label class="control-label" for="e-category-select">Выберите категорию</label>
+        <select class="form-control" id="e-category-select"
+                [(ngModel)]="currentCategoryId"
+                [ngModelOptions]="{standalone:true}"
+                (change)="categoryChange()">
+          <option
+            *ngFor="let category of categories"
+            [value]="category.id"
+          >{{category.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error':name.invalid && name.touched}">
+        <label class="control-label" for="e-category-name">Введите название</label>
+        <input type="text" id="e-category-name" class="form-control"
+               name="name" #name="ngModel"
+               [ngModel]="currentCategory.name"
+               required>
+        <span
+          *ngIf="name.invalid && name.touched"
+          class="form-help-text">Заполните поле</span>
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': capacity.invalid && capacity.touched}">
+        <label class="control-label" for="e-category-value">Введите лимит</label>
+        <input type="number" id="e-category-value" class="form-control"
+               name="capacity" #capacity="ngModel" wfmPositive
+               [ngModel]="currentCategory.capacity"
+               required minlength="1">
+        <span
+          *ngIf="capacity.invalid && capacity.touched"
+          class="form-help-text">Заполните поле</span>
+        <span
+          *ngIf="capacity.invalid && capacity.touched"
+          class="form-help-text has-error">Число только положительное</span>
+      </div>
+      <div class="button-flex">
+        <button type="submit" class="btn btn-primary"
+                [disabled]="f.invalid">
+          Редактировать
+        </button>
+        <button type="button" class="btn btn-danger"
+                [disabled]="f.invalid"
+                (click)="categoryDelete(currentCategoryId)">
+          Удалить
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

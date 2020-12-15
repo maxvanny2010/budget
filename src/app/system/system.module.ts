@@ -17,6 +17,11 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {BillInterceptor} from './shared/bill.interceptor';
 import {MomentPipe} from './shared/pipes/moment.pipe';
 import {SymbolPipe} from './shared/pipes/symbol.pipe';
+import {AddEventComponent} from './record-page/add-event/add-event.component';
+import {AddCategoryComponent} from './record-page/add-category/add-category.component';
+import {EditCategoryComponent} from './record-page/edit-category/edit-category.component';
+import {CategoriesService} from './shared/services/categories.service';
+import {PositiveDirective} from './shared/directives/positive.directive';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -35,13 +40,17 @@ const INTERCEPTOR_PROVIDER: Provider = {
     RecordPageComponent,
     SidebarComponent,
     HeaderComponent,
-    DropdownDirective,
     BillCardComponent,
     CurrencyCardComponent,
     MomentPipe,
-    SymbolPipe
+    SymbolPipe,
+    AddEventComponent,
+    AddCategoryComponent,
+    EditCategoryComponent,
+    DropdownDirective,
+    PositiveDirective
   ],
-  providers: [BillService, INTERCEPTOR_PROVIDER]
+  providers: [BillService, CategoriesService, INTERCEPTOR_PROVIDER]
 })
 export class SystemModule {
 
