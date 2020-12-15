@@ -1,21 +1,23 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Category} from '../../shared/models/category';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {Message} from '../../../shared/models/message.model';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'wfm-edit-category',
   templateUrl: './edit-category.component.html',
   styleUrls: ['./edit-category.component.scss']
 })
-export class EditCategoryComponent implements OnInit {
+export class EditCategoryComponent implements OnInit, OnDestroy {
   @Input() categories: Category[] = [];
   @Output() editCategory = new EventEmitter<Category>();
   @Output() deleteCategory = new EventEmitter<number>();
   currentCategoryId = 1;
   currentCategory: Category;
   message: Message;
+  cSub: Subscription;
 
   constructor(private categoryService: CategoriesService) {
   }
@@ -35,7 +37,7 @@ export class EditCategoryComponent implements OnInit {
     if (form.capacity < 1) {
       form.capacity *= -1;
     }
-    this.categoryService.update(form, this.currentCategoryId)
+    this.cSub = this.categoryService.update(form, this.currentCategoryId)
       .subscribe((category) => {
         this.editCategory.emit(category);
         this.setMessage('Категория отредактирована.', 'success');
@@ -47,7 +49,7 @@ export class EditCategoryComponent implements OnInit {
 
   categoryDelete(id: number): void {
     if (id > 0) {
-      this.categoryService.erase(id).subscribe(() => {
+      this.cSub = this.categoryService.erase(id).subscribe(() => {
         this.deleteCategory.emit(id);
         this.setCurrentId(1);
         this.categoryChange();
@@ -73,5 +75,11 @@ export class EditCategoryComponent implements OnInit {
 
   private setCurrentId(id: number): void {
     this.currentCategoryId = id;
+  }
+
+  ngOnDestroy(): void {
+    if (this.cSub) {
+      this.cSub.unsubscribe();
+    }
   }
 }

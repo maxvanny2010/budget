@@ -35,7 +35,7 @@
         <input type="number" id="e-category-value" class="form-control"
                name="capacity" #capacity="ngModel" wfmPositive
                [ngModel]="currentCategory.capacity"
-               required minlength="1">
+               required min="1">
         <span
           *ngIf="capacity.invalid && capacity.touched"
           class="form-help-text">Заполните поле</span>
