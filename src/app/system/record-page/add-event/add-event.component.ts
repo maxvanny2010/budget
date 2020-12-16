@@ -3,7 +3,7 @@ import {Category} from '../../shared/models/category';
 import {NgForm} from '@angular/forms';
 import {WFMEvent} from '../../shared/models/event.model';
 import * as moment from 'moment';
-import {EventsService} from '../../../shared/services/events.service';
+import {EventsService} from '../../shared/services/events.service';
 import {BillService} from '../../shared/services/bill.service';
 import {mergeMap} from 'rxjs/operators';
 import {Message} from '../../../shared/models/message.model';
