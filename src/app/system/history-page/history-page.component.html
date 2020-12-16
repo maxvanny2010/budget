@@ -3,6 +3,11 @@
     Страница истории <span class="sparkline bar"></span>
   </h3>
 </div>
-<wfm-history-chart></wfm-history-chart>
-<wfm-history-events></wfm-history-events>
-<wfm-history-filter></wfm-history-filter>
+<div *ngIf="isLoaded; else loading">
+  <wfm-history-chart [data]="chartData"></wfm-history-chart>
+  <wfm-history-events></wfm-history-events>
+  <wfm-history-filter></wfm-history-filter>
+</div>
+<ng-template #loading>
+  <section class="text-center">Загрузка...</section>
+</ng-template>
