@@ -23,6 +23,10 @@ import {EditCategoryComponent} from './record-page/edit-category/edit-category.c
 import {CategoriesService} from './shared/services/categories.service';
 import {PositiveDirective} from './shared/directives/positive.directive';
 import {EventsService} from './shared/services/events.service';
+import { HistoryChartComponent } from './history-page/history-chart/history-chart.component';
+import { HistoryEventsComponent } from './history-page/history-events/history-events.component';
+import { HistoryDetailComponent } from './history-page/history-detail/history-detail.component';
+import { HistoryFilterComponent } from './history-page/history-filter/history-filter.component';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -49,7 +53,11 @@ const INTERCEPTOR_PROVIDER: Provider = {
     AddCategoryComponent,
     EditCategoryComponent,
     DropdownDirective,
-    PositiveDirective
+    PositiveDirective,
+    HistoryChartComponent,
+    HistoryEventsComponent,
+    HistoryDetailComponent,
+    HistoryFilterComponent
   ],
   providers: [BillService, CategoriesService, EventsService, INTERCEPTOR_PROVIDER]
 })
