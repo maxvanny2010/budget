@@ -23,6 +23,10 @@ export class CategoriesService extends BaseApi {
     return this.get('categories');
   }
 
+  getById(id: number): Observable<Category> {
+    return this.get(`categories/${id}`);
+  }
+
   erase(id: number): Observable<[]> {
     return this.delete(`categories/${id}`);
   }

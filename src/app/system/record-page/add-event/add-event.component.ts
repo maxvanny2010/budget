@@ -55,7 +55,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.bSub = this.billService.update({value, currency: bill.currency})
         .pipe(
           mergeMap(() => {
-            return this.eventsService.addEvent(event);
+            return this.eventsService.add(event);
           })
         ).subscribe(() => {
           form.setValue({

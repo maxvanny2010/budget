@@ -28,6 +28,7 @@ import {HistoryEventsComponent} from './history-page/history-events/history-even
 import {HistoryDetailComponent} from './history-page/history-detail/history-detail.component';
 import {HistoryFilterComponent} from './history-page/history-filter/history-filter.component';
 import {PieChartModule} from '@swimlane/ngx-charts';
+import {FilterPipe} from './shared/pipes/filter.pipe';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -50,6 +51,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     CurrencyCardComponent,
     MomentPipe,
     SymbolPipe,
+    FilterPipe,
     AddEventComponent,
     AddCategoryComponent,
     EditCategoryComponent,
