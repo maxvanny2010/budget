@@ -5244,7 +5244,7 @@ Copyright (c) 2015 Daniel Eden
   position: absolute;
   display: none;
   -webkit-border-radius: 0;
-  -moz-border-radius:0;
+  -moz-border-radius: 0;
   background: #292929;
   color: #fff;
   font-family: sans-serif, Roboto;
@@ -7573,7 +7573,7 @@ code {
   font-size: 90%;
   color: #bd4147;
   background-color: #f7f7f9;
-  border-radius: .0
+  border-radius: 0
 }
 
 kbd {
@@ -9702,7 +9702,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   opacity: 0;
   -webkit-transition: opacity .15s linear;
   -o-transition: opacity .15s linear;
-  transition: opacity .15s linear
+  transition: opacity .15s linear;
 }
 
 .fade.in {
@@ -11981,6 +11981,7 @@ button.close {
   background-color: #000;
   border-radius: 0
 }
+
 .tooltip-arrow {
   position: absolute;
   width: 0;
