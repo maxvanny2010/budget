@@ -1,46 +1,50 @@
-<div class="modal fade">
-  <div class="modal-dialog">
+<div class="modal fade in">
+  <div class="modal-dialog backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close">
-          <span>×</span>
+        <button type="button" class="close" (click)="closeFilter()">
+          <span>&#11197;</span>
         </button>
         <h4 class="modal-title">Фильтр</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label class="control-label" for="period">Выберите период</label>
-          <select class="form-control" id="period">
-            <option>тип</option>
+          <select class="form-control" id="period" [(ngModel)]="selectedPeriod">
+            <option *ngFor="let p of timePeriods" [value]="p.type">{{p.label}}</option>
           </select>
         </div>
         <div class="form-group">
           <label class="control-label">Выберите тип события</label>
           <div>
-            <label>
+            <label *ngFor="let type of types;">
               <input
                 class="checkbox"
                 type="checkbox"
+                [value]="type.type"
+                (change)="changeType($event)"
               >
-              <span>еуче</span>
+              <span>{{type.label}}</span>
             </label>
           </div>
         </div>
         <div class="form-group">
           <label class="control-label">Выберите категории</label>
           <div>
-            <label>
+            <label *ngFor="let cat of categories;">
               <input
                 class="checkbox"
                 type="checkbox"
+                [value]="cat.id"
+                (change)="changeCategory($event)"
               >
-              <span>еуче</span>
+              <span>{{cat.name}}</span>
             </label>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary">Отмена</button>
-          <button type="button" class="btn btn-primary">Применить</button>
+          <button type="button" class="btn btn-secondary" (click)="closeFilter()">Отмена</button>
+          <button type="button" class="btn btn-primary" (click)="applyFilter()">Применить</button>
         </div>
       </div>
     </div>
