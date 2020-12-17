@@ -1,0 +1,12 @@
+.not-found {
+  background: #131e26;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vw;
+
+  h1 {
+    color: red;
+  }
+}
