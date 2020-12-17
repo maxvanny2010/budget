@@ -4,11 +4,13 @@ import {Category} from '../../shared/models/category';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {Message} from '../../../shared/models/message.model';
 import {Subscription} from 'rxjs';
+import {fadeStateTrigger} from '../../../shared/animations/fade.animation';
 
 @Component({
   selector: 'wfm-edit-category',
   templateUrl: './edit-category.component.html',
-  styleUrls: ['./edit-category.component.scss']
+  styleUrls: ['./edit-category.component.scss'],
+  animations: [fadeStateTrigger]
 })
 export class EditCategoryComponent implements OnInit, OnDestroy {
   @Input() categories: Category[] = [];

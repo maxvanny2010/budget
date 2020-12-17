@@ -6,13 +6,14 @@ import {Message} from '../../shared/models/message.model';
 import {Subject} from 'rxjs';
 import {AuthService} from '../../shared/services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {fadeStateTrigger} from '../../shared/animations/fade.animation';
 
 @Component({
   selector: 'wfm-login',
   templateUrl: './login.component.html',
+  animations: [fadeStateTrigger]
 })
 export class LoginComponent implements OnInit {
-
   form: FormGroup;
   message: Message;
   public error$: Subject<string> = new Subject<string>();
