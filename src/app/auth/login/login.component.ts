@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.registration) {
         this.showMessage({type: 'success', text: 'Введите ваши данные'});
+      } else if (params.authenticate) {
+        this.showMessage({type: 'warning', text: 'Пройдите аутентификацию'});
       }
     });
     this.form = new FormGroup({
