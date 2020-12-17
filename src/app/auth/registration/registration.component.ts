@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../shared/services/user.service';
 import {User} from '../../shared/models/user.model';
 import {Router} from '@angular/router';
+import {Meta, Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'wfm-registration',
@@ -12,7 +13,15 @@ export class RegistrationComponent implements OnInit {
   form: FormGroup;
 
   constructor(private userService: UserService,
-              private route: Router) {
+              private route: Router,
+              private title: Title,
+              private meta: Meta
+  ) {
+    title.setTitle('Регистрация');
+    meta.addTags([
+      {name: 'keywords', content: 'регистрация,вход,система'},
+      {name: 'description', content: 'Страница регистрации в систему домашняя бухгалтерия'}
+    ]);
   }
 
   ngOnInit(): void {
