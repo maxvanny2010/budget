@@ -6,7 +6,7 @@ export class BillInterceptor implements HttpInterceptor {
     req = req.clone();
     /*console.log(req);*/
     return next.handle(req).pipe(
-     /* tap(event => console.log(event))*/
+      /* tap(event => console.log(event))*/
     );
   }
 }
