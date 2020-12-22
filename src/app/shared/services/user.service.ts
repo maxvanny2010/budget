@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {User} from '../models/user.model';
 import {BaseApi} from '../core/base-api';
 import {map} from 'rxjs/operators';
+import {Users} from '../interfaces/interface';
 
 @Injectable()
 export class UserService extends BaseApi {
@@ -12,14 +12,15 @@ export class UserService extends BaseApi {
     super(http);
   }
 
-  getUserByEmail(email: string): Observable<User> {
-    return this.get(`users?email=${email}`)
-      .pipe(map((users) => {
-        return users[0] ? users[0] : undefined;
+  getUserByEmail(email: string): Observable<Users> {
+    return this.get(`users.json?email=${email}`)
+      .pipe(map((response: { [key: string]: any }) => {
+        const users = Object.keys(response).map(key => ({...response[key]}));
+        return users[0];
       }));
   }
 
-  create(user: User): Observable<User> {
-    return this.post('user', user);
+  create(user: Users): Observable<Users> {
+    return this.post('users.json', user);
   }
 }

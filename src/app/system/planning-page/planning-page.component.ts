@@ -4,9 +4,7 @@ import {CategoriesService} from '../shared/services/categories.service';
 import {EventsService} from '../shared/services/events.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {WFMEvent} from '../shared/models/event.model';
-import {Bill} from '../shared/models/bill.model';
-import {Category} from '../shared/models/category';
+import {Bill, Category, WFMEvent} from '../shared/interface/interface';
 
 @Component({
   selector: 'wfm-planning-page',
@@ -27,10 +25,17 @@ export class PlanningPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    let count = 0;
     this.mSub = combineLatest([
-      this.billService.get('bill'),
-      this.categoryService.get('categories'),
-      this.eventService.get('events')
+      this.billService.obtain(),
+      this.categoryService.get('categories.json')
+        .pipe(map((response: { [key: string]: any }) => {
+          return Object.keys(response).map(key => ({...response[key], id: count++}));
+        })),
+      this.eventService.get('events.json')
+        .pipe(map((response: { [key: string]: any }) => {
+          return Object.keys(response).map(key => ({...response[key]}));
+        })),
     ]).pipe(
       map((data: [Bill, Category[], WFMEvent[]]) => {
         return data;
@@ -45,7 +50,7 @@ export class PlanningPageComponent implements OnInit, OnDestroy {
   }
 
   getCategoryCost(cat: Category): number {
-    const catEvents = this.events.filter(e => e.category === cat.id && e.type === 'outcome');
+    const catEvents = this.events.filter(e => e.category === +cat.id && e.type === 'outcome');
     return catEvents.reduce((total, e) => {
       /*  debugger*/
       total += e.amount;

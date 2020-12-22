@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {combineLatest, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Category} from '../shared/models/category';
-import {WFMEvent} from '../shared/models/event.model';
 import {CategoriesService} from '../shared/services/categories.service';
 import * as moment from 'moment';
+import {Category, WFMEvent} from '../shared/interface/interface';
+import {EventsService} from '../shared/services/events.service';
 
 @Component({
   selector: 'wfm-history-page',
@@ -23,13 +23,20 @@ export class HistoryPageComponent implements OnInit, OnDestroy {
   isFilterView = false;
 
   constructor(private categoryService: CategoriesService,
-              private eventService: CategoriesService) {
+              private eventService: EventsService) {
   }
 
   ngOnInit(): void {
+    let count = 0;
     this.cSub = combineLatest([
-      this.categoryService.get('categories'),
-      this.eventService.get('events')
+      this.categoryService.get('categories.json')
+        .pipe(map((response: { [key: string]: any }) => {
+          return Object.keys(response).map(key => ({...response[key], id: count++}));
+        })),
+      this.eventService.get('events.json')
+        .pipe(map((response: { [key: string]: any }) => {
+          return Object.keys(response).map(key => ({...response[key], id: key}));
+        })),
     ]).pipe(
       map((resp: [Category[], WFMEvent[]]) => {
         return resp;
@@ -50,7 +57,7 @@ export class HistoryPageComponent implements OnInit, OnDestroy {
   private calculateChartData(): void {
     this.chartData = [];
     this.categories.forEach((cat) => {
-      const catEvent = this.filterEvents.filter(e => e.category === cat.id && e.type === 'outcome');
+      const catEvent = this.filterEvents.filter(e => e.category === +cat.id && e.type === 'outcome');
       this.chartData.push({
         name: cat.name,
         value: catEvent.reduce((total, e) => {

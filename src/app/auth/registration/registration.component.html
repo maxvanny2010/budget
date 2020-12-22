@@ -1,4 +1,7 @@
 <p class="text-xs-center">Регистрация для получения доступа</p>
+<div
+  @fade
+  class="alert alert-danger" *ngIf="auth.error$ | async as error">{{error}}</div>
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="form-group" [ngClass]="{'has-error':form.get('email').invalid && form.get('email').touched}">
     <label for="email">Почта</label>

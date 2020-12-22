@@ -9,9 +9,10 @@
     <form #f="ngForm" (ngSubmit)="submit(f)">
       <div class="form-group">
         <label class="control-label" for="category">Выберите категорию</label>
-        <select class="form-control" id="category" name="category" required
-                [ngModel]="1"
-        >
+        <select class="form-control" id="category" name="category"
+                [(ngModel)]="currentCategoryId"
+                required>
+
           <option
             *ngFor="let category of categories;"
             [value]="category.id"

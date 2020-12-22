@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
-import {Category} from '../../shared/models/category';
 import {CategoriesService} from '../../shared/services/categories.service';
 import {Message} from '../../../shared/models/message.model';
 import {Subscription} from 'rxjs';
 import {fadeStateTrigger} from '../../../shared/animations/fade.animation';
+import {Category} from '../../shared/interface/interface';
 
 @Component({
   selector: 'wfm-edit-category',
@@ -15,8 +15,8 @@ import {fadeStateTrigger} from '../../../shared/animations/fade.animation';
 export class EditCategoryComponent implements OnInit, OnDestroy {
   @Input() categories: Category[] = [];
   @Output() editCategory = new EventEmitter<Category>();
-  @Output() deleteCategory = new EventEmitter<number>();
-  currentCategoryId = 1;
+  @Output() deleteCategory = new EventEmitter<string>();
+  currentCategoryId: string;
   currentCategory: Category;
   message: Message;
   cSub: Subscription;
@@ -26,12 +26,12 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.message = new Message('', 'success');
+    this.currentCategoryId = String(this.categories[0].id);
     this.categoryChange();
   }
 
   categoryChange(): void {
-    /*this.currentCategory = this.categories[this.currentCategoryId - 1];*/
-    this.currentCategory = this.categories.find(c => c.id === +this.currentCategoryId);
+    this.currentCategory = this.categories.find(c => String(c.id) === this.currentCategoryId);
   }
 
   submit(forms: NgForm): void {
@@ -49,11 +49,11 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
       });
   }
 
-  categoryDelete(id: number): void {
-    if (id > 0) {
+  categoryDelete(id: string): void {
+    if (id.length !== 0) {
       this.cSub = this.categoryService.erase(id).subscribe(() => {
         this.deleteCategory.emit(id);
-        this.setCurrentId(1);
+        this.setCurrentId(String(this.categories[0].id));
         this.categoryChange();
         this.setMessage('Категория удалена.', 'success');
         setTimeout(() => {
@@ -61,7 +61,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
         }, 5000);
       });
     } else {
-      this.setCurrentId(1);
+      this.setCurrentId(String(this.categories[0].id));
       this.categoryChange();
       this.setMessage('Категория не существует.', 'danger');
       setTimeout(() => {
@@ -75,7 +75,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
     this.message.type = type;
   }
 
-  private setCurrentId(id: number): void {
+  private setCurrentId(id: string): void {
     this.currentCategoryId = id;
   }
 

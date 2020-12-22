@@ -5,6 +5,48 @@
       "email": "a@a.aa",
       "password": "123456",
       "name": "Администратор"
+    },
+    {
+      "email": "z@z.zz",
+      "password": "123456",
+      "name": "zzz",
+      "agree": true,
+      "id": 2
+    },
+    {
+      "email": "s@s.ss",
+      "password": "123456",
+      "name": "sss",
+      "agree": true,
+      "id": 3
+    },
+    {
+      "email": "t@t.tt",
+      "password": "123456",
+      "name": "ttt",
+      "agree": true,
+      "id": 4
+    },
+    {
+      "email": "c@c.cc",
+      "password": "123456",
+      "name": "ccc",
+      "agree": true,
+      "id": 5
+    },
+    {
+      "email": "d@d.dd",
+      "password": "123456",
+      "name": "dddd",
+      "agree": true,
+      "id": 6
+    },
+    {
+      "email": "e@e.ee",
+      "password": "123456",
+      "name": "eee",
+      "agree": true,
+      "id": 7
     }
   ],
   "bill": {

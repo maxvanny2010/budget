@@ -1,25 +1,25 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthService} from './auth.service';
+import {AuthFbService} from './authfb.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private auth: AuthFbService, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggIn()) {
+    if (this.auth.isAuthenticated()) {
       return true;
     } else {
+      this.auth.logout();
       this.router.navigate(['/login'], {
         queryParams:
-          {authenticate: false}
+          {authenticated: false}
       }).then(() => {
       });
     }
-    return false;
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot)

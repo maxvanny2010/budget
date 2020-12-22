@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Category} from '../shared/models/category';
 import {CategoriesService} from '../shared/services/categories.service';
+import {Category} from '../shared/interface/interface';
+import {EventsService} from '../shared/services/events.service';
 
 @Component({
   selector: 'wfm-record-page',
@@ -11,13 +12,22 @@ export class RecordPageComponent implements OnInit {
   categories: Category[] = [];
   isLoaded = false;
 
-  constructor(private categoriesService: CategoriesService) {
+  constructor(private categoriesService: CategoriesService, private eventService: EventsService) {
   }
 
   ngOnInit(): void {
-    this.categoriesService.obtain().subscribe((categories) => {
-      this.categories = categories;
-      this.isLoaded = true;
+    this.categoriesService.getAll().subscribe((categories) => {
+      if (categories.length === 0) {
+        this.categoriesService.create().subscribe((category) => {
+          this.eventService.create().subscribe(() => {
+            this.addCategory(category);
+            this.isLoaded = true;
+          });
+        });
+      } else {
+        this.categories = categories;
+        this.isLoaded = true;
+      }
     });
   }
 
@@ -26,12 +36,12 @@ export class RecordPageComponent implements OnInit {
   }
 
   updateCategory(category: Category): void {
-    const idx = this.categories.findIndex(c => c.id === +category.id);
+    const idx = this.categories.findIndex((c) => c.id === category.id);
     this.categories[idx] = category;
   }
 
-  deleteCategory(id: number): void {
-    const idx = this.categories.findIndex(c => c.id === +id);
+  deleteCategory(id: string): void {
+    const idx = this.categories.findIndex((c) => String(c.id) === id);
     this.categories.splice(idx, 1);
   }
 }

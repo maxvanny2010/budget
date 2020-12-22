@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Category} from '../../shared/models/category';
-import {WFMEvent} from '../../shared/models/event.model';
+import {Category, WFMEvent} from '../../shared/interface/interface';
 
 @Component({
   selector: 'wfm-history-events',
@@ -18,9 +17,11 @@ export class HistoryEventsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.events.forEach((e) => {
-      e.catName = this.categories.find(c => c.id === e.category).name;
-    });
+    if (this.events.length !== 0) {
+      this.events.forEach((e) => {
+        e.catName = this.categories[e.category].name;
+      });
+    }
   }
 
   getEventClass(e: WFMEvent): any {

@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {BaseApi} from '../../../shared/core/base-api';
 import {HttpClient} from '@angular/common/http';
-import {Category} from '../models/category';
 import {Observable} from 'rxjs';
+import {Category} from '../interface/interface';
+import {map} from 'rxjs/operators';
+import {FbResponse} from '../../../shared/interfaces/interface';
 
 @Injectable()
 export class CategoriesService extends BaseApi {
@@ -12,22 +14,50 @@ export class CategoriesService extends BaseApi {
   }
 
   add(category: Category): Observable<Category> {
-    return this.post('categories', category);
+    return this.post('categories.json', category)
+      .pipe(
+        map((response: FbResponse) => {
+          return {
+            ...category,
+            id: response.name
+          };
+        })
+      );
   }
 
-  update(category: Category, id: number): Observable<Category> {
-    return this.put(`categories/${id}`, category);
+  create(): Observable<Category> {
+    const category = {name: 'Дом', capacity: 0};
+    return this.add(category);
   }
 
-  obtain(): Observable<Category[]> {
-    return this.get('categories');
+  update(category: Category, id: string): Observable<Category> {
+    return this.put(`categories/${id}.json`, category)
+      .pipe(map(() => {
+        return {...category};
+      }));
+  }
+
+  getAll(): Observable<Category[]> {
+    return this.get('categories.json')
+      .pipe(map((response: { [key: string]: any }) => {
+          if (response === null) {
+            return [];
+          } else {
+            return Object.keys(response).map(key => ({...response[key], id: key}));
+          }
+        }
+      ));
   }
 
   getById(id: number): Observable<Category> {
-    return this.get(`categories/${id}`);
+    return this.get(`categories/${id}.json`).pipe(map((response: { [key: string]: any }) => {
+      const categories = Object.keys(response).map(key => ({...response[key], id: key}));
+      console.log(categories);
+      return categories[0];
+    }));
   }
 
-  erase(id: number): Observable<[]> {
-    return this.delete(`categories/${id}`);
+  erase(id: string): Observable<Category> {
+    return this.delete(`categories/${id}.json`);
   }
 }

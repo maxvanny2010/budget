@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnDestroy, Output} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {CategoriesService} from '../../shared/services/categories.service';
-import {Category} from '../../shared/models/category';
 import {Subscription} from 'rxjs';
+import {Category} from '../../shared/interface/interface';
 
 @Component({
   selector: 'wfm-add-category',

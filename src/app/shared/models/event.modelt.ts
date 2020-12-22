@@ -11,12 +11,3 @@ export class WFMEvent {
   }
 
 }
-
-/*
-"type": "outcome",
-    "amount": 2470,
-    "category": 2,
-    "date": "17.06.2017 14:00:58",
-    "id": 4,
-    "description": "Закупка на неделю"
-* */

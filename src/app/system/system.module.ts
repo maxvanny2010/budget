@@ -10,11 +10,10 @@ import {RecordPageComponent} from './record-page/record-page.component';
 import {SidebarComponent} from './shared/components/sidebar/sidebar.component';
 import {HeaderComponent} from './shared/components/header/header.component';
 import {DropdownDirective} from './shared/directives/dropdown.directive';
-import {BillCardComponent} from './bill-page/bill-card/bill-card.component';
-import {CurrencyCardComponent} from './bill-page/currency-card/currency-card.component';
+import {BillBalanceCardComponent} from './bill-page/bill-balance-card/bill-balance-card.component';
+import {BillCurrencyCardComponent} from './bill-page/bill-currency-card/bill-currency-card.component';
 import {BillService} from './shared/services/bill.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {BillInterceptor} from './shared/bill.interceptor';
 import {MomentPipe} from './shared/pipes/moment.pipe';
 import {SymbolPipe} from './shared/pipes/symbol.pipe';
 import {AddEventComponent} from './record-page/add-event/add-event.component';
@@ -29,10 +28,12 @@ import {HistoryDetailComponent} from './history-page/history-detail/history-deta
 import {HistoryFilterComponent} from './history-page/history-filter/history-filter.component';
 import {PieChartModule} from '@swimlane/ngx-charts';
 import {FilterPipe} from './shared/pipes/filter.pipe';
+import {BillFillCardComponent} from './bill-page/bill-fill-card/bill-fill-card.component';
+import {AuthInterceptor} from './shared/interceptors/auth.interceptor';
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
-  useClass: BillInterceptor,
+  useClass: AuthInterceptor,
   multi: true
 };
 
@@ -47,8 +48,8 @@ const INTERCEPTOR_PROVIDER: Provider = {
     RecordPageComponent,
     SidebarComponent,
     HeaderComponent,
-    BillCardComponent,
-    CurrencyCardComponent,
+    BillBalanceCardComponent,
+    BillCurrencyCardComponent,
     MomentPipe,
     SymbolPipe,
     FilterPipe,
@@ -61,6 +62,7 @@ const INTERCEPTOR_PROVIDER: Provider = {
     HistoryEventsComponent,
     HistoryDetailComponent,
     HistoryFilterComponent,
+    BillFillCardComponent,
   ],
   providers: [BillService, CategoriesService, EventsService, INTERCEPTOR_PROVIDER]
 })

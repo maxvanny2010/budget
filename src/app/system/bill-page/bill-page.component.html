@@ -9,10 +9,10 @@
   </div>
 </div>
 <section class="section">
-  <!--  <div class="row text-center" *ngIf="!isLoaded">Загрузка...</div>-->
   <div class="row" *ngIf="isLoaded; else loading">
-    <wfm-bill-card [bill]="bill" [currency]="currency"></wfm-bill-card>
-    <wfm-currency [currency]="currency" [coin]="coins"></wfm-currency>
+    <wfm-bill-currency-card [currency]="currency" [coin]="coins"></wfm-bill-currency-card>
+    <wfm-bill-balance-card [bill]="bill" [coins]="coins"></wfm-bill-balance-card>
+    <wfm-bill-fill-card [bill]="bill" (addBalance)="addBalance($event)"></wfm-bill-fill-card>
   </div>
 </section>
 <ng-template #loading>

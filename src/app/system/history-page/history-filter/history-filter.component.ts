@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Category} from '../../shared/models/category';
+import {Category} from '../../shared/interface/interface';
 
 @Component({
   selector: 'wfm-history-filter',

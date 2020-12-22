@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../shared/services/user.service';
-import {User} from '../../shared/models/user.model';
 import {Message} from '../../shared/models/message.model';
-import {Subject} from 'rxjs';
-import {AuthService} from '../../shared/services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {fadeStateTrigger} from '../../shared/animations/fade.animation';
 import {Meta, Title} from '@angular/platform-browser';
+import {User} from '../../shared/interfaces/interface';
+import {AuthFbService} from '../../shared/services/authfb.service';
+import {UserService} from '../../shared/services/user.service';
+import {NameService} from '../../shared/services/name.service';
 
 @Component({
   selector: 'wfm-login',
@@ -16,13 +16,13 @@ import {Meta, Title} from '@angular/platform-browser';
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
-  message: Message;
-  public error$: Subject<string> = new Subject<string>();
+  submitted = false;
 
-  constructor(private userService: UserService,
-              private authService: AuthService,
-              private router: Router,
+  constructor(public auth: AuthFbService,
+              private users: UserService,
+              private storage: NameService,
               private route: ActivatedRoute,
+              private router: Router,
               private title: Title,
               private meta: Meta
   ) {
@@ -33,18 +33,20 @@ export class LoginComponent implements OnInit {
     ]);
   }
 
+  message: Message;
+
   ngOnInit(): void {
     this.message = new Message('', 'danger');
     this.route.queryParams.subscribe((params) => {
       if (params.registration) {
         this.showMessage({type: 'success', text: 'Введите ваши данные'});
-      } else if (params.authenticate) {
-        this.showMessage({type: 'warning', text: 'Пройдите аутентификацию'});
+      } else if (!params.authenticated) {
+        this.showMessage({type: 'info', text: 'Пройдите аутентификацию'});
       }
     });
     this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(6)])
+      email: new FormControl('a@a.aa', [Validators.required, Validators.email]),
+      password: new FormControl('123456', [Validators.required, Validators.minLength(6)])
     });
   }
 
@@ -52,31 +54,31 @@ export class LoginComponent implements OnInit {
     this.message = message;
     window.setTimeout(() => {
       this.message.text = '';
-    }, 5000);
+    }, 3000);
   }
 
   submit(): void {
-    const form = this.form.value;
-    this.userService.getUserByEmail(form.email)
-      .subscribe((user: User) => {
-        if (user) {
-          if (user.password === form.password) {
-            this.authService.login();
-            localStorage.setItem('user', JSON.stringify(user));
+    if (this.form.invalid) {
+      return;
+    }
+    this.submitted = true;
+    const user: User = {
+      email: this.form.value.email,
+      password: this.form.value.password,
+      returnSecureToken: false
+    };
+    this.auth.login(user)
+      .subscribe(() => {
+          this.users.getUserByEmail(user.email).subscribe((response) => {
+            this.storage.setNameStorage(response.name);
             this.router.navigate(['/system', 'bill']).then(() => {
+              this.submitted = false;
             });
-          } else {
-            this.error$.next(this.message.text = 'Повторите пароль');
-          }
-        } else {
-          this.showMessage({
-            type: 'danger',
-            text: 'Пользовататель не существует'
           });
+        },
+        () => {
+          this.submitted = false;
         }
-        window.setTimeout(() => {
-          this.error$.next(this.message.text = '');
-        }, 5000);
-      });
+      );
   }
 }

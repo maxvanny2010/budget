@@ -10,12 +10,12 @@ import {AuthGuard} from '../shared/services/auth.guard';
 
 const routes: Routes = [
   {
-    path: '', component: SystemComponent, canActivate: [AuthGuard], children: [
-      {path: 'bill', component: BillPageComponent},
-      {path: 'history', component: HistoryPageComponent},
-      {path: 'history/:id', component: HistoryDetailComponent},
-      {path: 'planning', component: PlanningPageComponent},
-      {path: 'record', component: RecordPageComponent},
+    path: '', component: SystemComponent, children: [
+      {path: 'bill', component: BillPageComponent, canActivate: [AuthGuard]},
+      {path: 'history', component: HistoryPageComponent, canActivate: [AuthGuard]},
+      {path: 'history/:id', component: HistoryDetailComponent, canActivate: [AuthGuard]},
+      {path: 'planning', component: PlanningPageComponent, canActivate: [AuthGuard]},
+      {path: 'record', component: RecordPageComponent, canActivate: [AuthGuard]},
     ]
   }
 ];

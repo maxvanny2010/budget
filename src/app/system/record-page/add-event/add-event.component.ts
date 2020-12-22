@@ -1,13 +1,13 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Category} from '../../shared/models/category';
 import {NgForm} from '@angular/forms';
-import {WFMEvent} from '../../shared/models/event.model';
 import * as moment from 'moment';
 import {EventsService} from '../../shared/services/events.service';
 import {BillService} from '../../shared/services/bill.service';
 import {mergeMap} from 'rxjs/operators';
 import {Message} from '../../../shared/models/message.model';
 import {Subscription} from 'rxjs';
+import {Category} from '../../shared/interface/interface';
+import {WFMEvent} from '../../../shared/models/event.modelt';
 
 @Component({
   selector: 'wfm-add-event',
@@ -22,12 +22,15 @@ export class AddEventComponent implements OnInit, OnDestroy {
   ];
   message: Message;
   bSub: Subscription;
+  currentCategoryId: string;
+  currentCategory: number;
 
-  constructor(private eventsService: EventsService, private billService: BillService) {
+  constructor(private eventsService: EventsService, private bills: BillService) {
   }
 
   ngOnInit(): void {
     this.message = new Message('', 'danger');
+    this.currentCategoryId = String(this.categories[0].id);
   }
 
   private showMessage(text: string): void {
@@ -35,12 +38,18 @@ export class AddEventComponent implements OnInit, OnDestroy {
     setTimeout(() => this.message.text = '', 5000);
   }
 
+  getCategory(): number {
+    this.currentCategory = this.categories.findIndex(c => c.id === this.currentCategoryId);
+    return +this.currentCategory;
+  }
+
   submit(form: NgForm): void {
-    const pattern = 'DD.MM.YYY HH:mm:ss';
+    const pattern = 'DD.MM.YYYY HH:mm:ss';
     const text = `На счету недостаточно средств. Вам не хватает`;
-    const {amount, description, category, type} = form.value;
-    const event = new WFMEvent(type, amount, +category, moment().format(pattern), description);
-    this.bSub = this.billService.obtain().subscribe((bill) => {
+    const {amount, description, type} = form.value;
+    const category = this.getCategory();
+    const event = new WFMEvent(type, amount, category, moment().format(pattern), description);
+    this.bSub = this.bills.obtain().subscribe((bill) => {
       let value = 0;
       if (type === 'outcome') {
         if (amount > bill.value) {
@@ -52,7 +61,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
       } else {
         value = bill.value + amount;
       }
-      this.bSub = this.billService.update({value, currency: bill.currency})
+      this.bSub = this.bills.update({value, currency: bill.currency})
         .pipe(
           mergeMap(() => {
             return this.eventsService.add(event);
@@ -61,7 +70,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
           form.setValue({
             amount: 1,
             description: '      ',
-            category: 1,
+            category: this.currentCategoryId,
             type: 'outcome'
           });
         });
@@ -73,5 +82,4 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.bSub.unsubscribe();
     }
   }
-
 }

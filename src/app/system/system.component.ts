@@ -8,5 +8,5 @@ import {fadeStateTrigger} from '../shared/animations/fade.animation';
 })
 export class SystemComponent {
   @HostBinding('@fade') a = true;
-
+  name: string;
 }

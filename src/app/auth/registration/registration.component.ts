@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../shared/services/user.service';
-import {User} from '../../shared/models/user.model';
 import {Router} from '@angular/router';
 import {Meta, Title} from '@angular/platform-browser';
+import {AuthFbService} from '../../shared/services/authfb.service';
+import {User, Users} from '../../shared/interfaces/interface';
+import {UserService} from '../../shared/services/user.service';
 
 @Component({
   selector: 'wfm-registration',
@@ -12,7 +13,8 @@ import {Meta, Title} from '@angular/platform-browser';
 export class RegistrationComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private userService: UserService,
+  constructor(public auth: AuthFbService,
+              private users: UserService,
               private route: Router,
               private title: Title,
               private meta: Meta
@@ -26,7 +28,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email], this.uniqEmail.bind(this)),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
       name: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       agree: new FormControl(false, [Validators.requiredTrue])
@@ -40,26 +42,19 @@ export class RegistrationComponent implements OnInit {
     const user: User = {
       ...this.form.value
     };
-    this.userService.create(user).subscribe(() => {
-      this.route.navigate(['/login'], {
-        queryParams: {
-          registration: true
-        }
-      }).then(() => {
-      });
-    });
-  }
-
-  uniqEmail(control: FormControl): Promise<any> {
-    return new Promise<any>((resolve) => {
-      this.userService.getUserByEmail(control.value)
-        .subscribe((user) => {
-          if (user) {
-            resolve({uniqEmail: true});
-          } else {
-            resolve(null);
-          }
+    const users: Users = {
+      ...this.form.value
+    };
+    this.auth.registration(user)
+      .subscribe(() => {
+        this.users.create(users).subscribe(() => {
         });
-    });
+        this.route.navigate(['/login'], {
+          queryParams: {
+            registration: true
+          }
+        }).then(() => {
+        });
+      });
   }
 }
